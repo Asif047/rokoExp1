@@ -3,6 +3,7 @@ package com.example.asif047.rokomariexp1;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,8 +25,11 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
 
+    private TextView matchTV;
 
-    private List<Cricket> crickets;
+    Gson gson;
+
+    private Cricket crickets;
     private static final String serverurl= "http://cricapi.com/api/matchCalendar//?unique_id=918033&&apikey=6krnL0YcJrVul5eNZrNee4ogpVF2";
 
     private String TAG="Home Fragment:";
@@ -36,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        crickets=new ArrayList<>();
+        matchTV= (TextView) findViewById(R.id.match_textview);
+        //crickets=new ArrayList<>();
 
         try
         {
@@ -78,17 +83,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                Collection cricketzz = new Vector();
 
 
 
-                Gson gson = new Gson();
-                //String json = gson.toJson(response.body());
-                //Log.d(TAG,json);
-                Type token = new TypeToken<List<Cricket>>() {}.getType();
-                List<Cricket> result = gson.fromJson(res, token);//
-//
-               Toast.makeText(MainActivity.this,""+result.get(0).getV(),Toast.LENGTH_LONG).show();
+               gson = new Gson();
+
+                crickets=gson.fromJson(res,Cricket.class);
+
+                List<Cricket.Datum>cric=crickets.getData();
+
+
+
+                Log.d(TAG,cric.get(0).getName().toString());
+
+
+
+
 
 
 
@@ -100,10 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public class Data {
-        private List<Cricket> crickets;
-        // +getters/setters
-    }
 
 
 
